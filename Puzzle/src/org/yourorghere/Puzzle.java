@@ -57,7 +57,7 @@ public class Puzzle implements GLEventListener {
     }
     
     public static void main(String[] args) {
-        Frame frame = new Frame("Puzzle");
+        Frame frame = new Frame("Puzzle :v");
         GLCanvas canvas = new GLCanvas();
 
         canvas.addGLEventListener(new Puzzle());
