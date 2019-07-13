@@ -11,6 +11,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GL;
@@ -34,7 +36,29 @@ public class Puzzle implements GLEventListener {
     public static float posicionX = 0;
     public static float posicionY = 0;
     public static Cuadro[] tablero = new Cuadro[10];
-    public static int[] imagen = new int[9];
+    public static int imagen ;
+    public static Vector v = new Vector(9);
+    
+    public static void shuffle(Vector v) {
+        Random random = new Random(System.currentTimeMillis());
+        Object[] array = new Object[v.size()];
+        for (int i = 0; i < v.size(); i++) {
+            array[i] = v.elementAt(i);
+        }
+
+        int index;
+        Object temp;
+        for (int i = array.length - 1; i > 0; i--) {
+            index = random.nextInt(i + 1);
+            temp = array[i];
+            array[i] = array[index];
+            array[index] = temp;
+        }
+
+        for (int i = 0; i < v.size(); i++) {
+            v.setElementAt(array[i], i);
+        }
+    }
     
     public static void moverPosicion(int i, int j){
         File f = tablero[i].img;//Cuadro aux = new Cuadro(tablero[8]);
@@ -64,6 +88,16 @@ public class Puzzle implements GLEventListener {
         
         tablero[0] = new Cuadro();//esta posicion no se utiliza
         
+        v.addElement(1);
+        v.addElement(2);
+        v.addElement(3);
+        v.addElement(4);
+        v.addElement(5);
+        v.addElement(6);
+        v.addElement(7);
+        v.addElement(8);
+        v.addElement(9);
+        shuffle(v);
          canvas.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -230,17 +264,18 @@ public class Puzzle implements GLEventListener {
         // Enable VSync
         gl.setSwapInterval(1);
         
-        File img[] = new File[9];
-        Texture tex[] = new Texture[9];
+        File img;
+        Texture tex;
         
         
         try {
             for(int i = 0; i<9 ; i++){
-                String url = "src/img/"+(i+1)+".png";
-                img[i] = new File(url);
-                tex[i] = TextureIO.newTexture(img[i], true);
-                imagen[i] = tex[i].getTextureObject();
-                Cuadro p = new Cuadro(img[i], tex[i], imagen[i], i+1);
+                int x = (Integer) v.get(i);
+                String url = "src/img/"+x+".png";
+                img = new File(url);
+                tex = TextureIO.newTexture(img, true);
+                imagen = tex.getTextureObject();
+                Cuadro p = new Cuadro(img, tex, imagen, x, i+1);
                 asignarPosicion(p);
                 tablero[i+1] = p;
             }
@@ -278,7 +313,7 @@ public class Puzzle implements GLEventListener {
     }
     
     public void asignarPosicion(Cuadro p){
-        int x = p.indice;
+        int x = p.posicion;
         switch (x) {
             case 1:
                 p.cuadrado[0] = -2.1f;

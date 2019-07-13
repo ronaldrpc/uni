@@ -19,16 +19,18 @@ public class Cuadro {
     int imagen;
     int indice;
     float cuadrado[] = new float[4];
+    int posicion;
     
     public Cuadro(){
         
     }
     
-    public Cuadro (File i, Texture t, int im, int ind){
+    public Cuadro (File i, Texture t, int im, int ind, int pos){
         img = i;
         tex = t;
         imagen = im;
         indice = ind;
+        posicion = pos;
     }
     
     
