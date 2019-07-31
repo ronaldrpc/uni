@@ -1,0 +1,3 @@
+Cambia la direccion del service.properties a donde se guardan las derby en el pc a usar
+
+Reemplaza las librerias por las que se encuentren en el pc a usar
